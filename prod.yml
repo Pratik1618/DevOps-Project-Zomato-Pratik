@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zomato-app
+  namespace: zomato-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zomato-app
+  template:
+    metadata:
+      labels:
+        app: zomato-app
+    spec:
+      containers:
+      - name: zomato-app
+        image: <IMAGE_URL>
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zomato-service
+  namespace: zomato-prod
+spec:
+  type: LoadBalancer
+  selector:
+    app: zomato-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
